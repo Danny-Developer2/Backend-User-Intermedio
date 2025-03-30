@@ -8,7 +8,7 @@ namespace prueba.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN,USER")]
 
     public class ProductosController : ControllerBase
     {

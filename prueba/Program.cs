@@ -100,11 +100,19 @@ builder.Services.AddValidatorsFromAssemblyContaining<LoginValidator>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
+builder.Services.AddScoped<ISessionCacheService, SessionCacheService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ISessionService, SessionService>();
 // Add this line with your other service registrations
 builder.Services.AddScoped<IEncryptionService, EncryptionService>();
+
+// ... existing code ...
+builder.Services.AddScoped<IAsistenciaService, AsistenciaService>();
+// ... existing code ...
+builder.Services.AddScoped<IWhatsAppService, WhatsAppService>();
+// ... existing code ...
+builder.Services.AddHostedService<AttendanceReportScheduler>();
+// ... existing code ...
 
 // ... rest of your services configuration ...
 

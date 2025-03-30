@@ -23,19 +23,22 @@ namespace prueba.Controllers
         private readonly string? _jwtSecretKey;
         private readonly ILogger<AuthController> _logger;
         private readonly IEncryptionService _encryptionService;
+        private readonly ISessionCacheService _sessionCache;
 
         public AuthController(
             IUnitOfWork unitOfWork,
             IMapper mapper,
             ILogger<AuthController> logger,
             IConfiguration configuration,
-            IEncryptionService encryptionService)
+            IEncryptionService encryptionService,
+            ISessionCacheService sessionCache)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _jwtSecretKey = configuration["JwtSettings:SecretKey"];
             _logger = logger;
             _encryptionService = encryptionService;
+            _sessionCache = sessionCache;
         }
 
         private string TokenEncrypt(string token)
@@ -51,6 +54,15 @@ namespace prueba.Controllers
                 var user = await _unitOfWork.LoginRepository.LoginAsync(loginDTO.Username, loginDTO.Password);
 
                 var Token = TokenEncrypt(user.Token);
+
+                await _sessionCache.SetSessionAsync(Token, new UserSession
+                {
+                    UserId = user.Id,
+                    TokenHash = user.Token,
+                    User = user,
+                });
+
+
 
                 var cookieOptions = new CookieOptions
                 {
@@ -231,6 +243,7 @@ namespace prueba.Controllers
                 var result = await _unitOfWork.LoginRepository.LogoutAsync(token);
 
                 Response.Cookies.Delete("Cookie");
+                await _sessionCache.RemoveSessionAsync(encryptedToken);
 
                 return Ok(new ApiResponse(
                     mensaje: "Cierre de sesión exitoso",

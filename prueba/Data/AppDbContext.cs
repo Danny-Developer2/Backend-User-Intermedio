@@ -13,6 +13,8 @@ namespace prueba.Data
 
         public DbSet<UserSession> UserSessions { get; set; }
 
+        public DbSet<RegisterAsistencia> RegisterAsistencias { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
