@@ -3,6 +3,7 @@ using prueba.Repositories;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Caching.Memory;
 using AutoMapper;
+using prueba.Services;
 
 namespace prueba.Data
 {
@@ -17,6 +18,10 @@ namespace prueba.Data
         private readonly ISessionService _sessionService;
         private ILoginRepository? _loginRepository;
 
+        private IAsistenciaService? _asistenciaService;
+
+         private readonly IWhatsAppService _whatsAppService;
+
         public IUserRepository? _userRepository;
 
         public UnitOfWork(
@@ -26,7 +31,9 @@ namespace prueba.Data
             IMapper mapper,
             IAuthenticationService authService,
             ISessionService sessionService,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IAsistenciaService asistenciaService,
+            IWhatsAppService whatsAppService)
         {
             _context = context;
             _logger = logger;
@@ -35,6 +42,18 @@ namespace prueba.Data
             _authService = authService;
             _sessionService = sessionService;
             _userRepository = userRepository;
+            _asistenciaService = asistenciaService;
+            _whatsAppService = whatsAppService;
+        }
+
+
+        public IAsistenciaService AsistenciaService
+        {
+            get
+            {
+                _asistenciaService ??= new AsistenciaService(_context, _whatsAppService);
+                return _asistenciaService;
+            }
         }
 
         public IUserRepository UserRepository

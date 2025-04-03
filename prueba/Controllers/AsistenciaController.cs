@@ -1,33 +1,78 @@
 using Microsoft.AspNetCore.Mvc;
 using prueba.Dto;
 using prueba.Services;
+using prueba.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
+using prueba.Error;
 
 namespace prueba.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AsistenciaController : ApiControllBase
+    public class AsistenciaController(IUnitOfWork unitOfWork) : ApiControllBase
     {
-        private readonly IAsistenciaService _asistenciaService;
-
-        public AsistenciaController(IAsistenciaService asistenciaService)
-        {
-            _asistenciaService = asistenciaService;
-        }
-
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+      
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsistencia([FromBody] RegisterAsistenciaDTO dto)
         {
-            var result = await _asistenciaService.RegisterAsistenciaAsync(dto);
-            return Ok(result);
+            try
+            {
+
+
+                // var result = await _asistenciaService.RegisterAsistenciaAsync(dto);
+                var result = await _unitOfWork.AsistenciaService.RegisterAsistenciaAsync(dto);
+
+                // if (result == null)
+                // {
+                //     return BadRequest(new ApiResponse(
+                //         mensaje: "No se pudo registrar la asistencia",
+                //         exito: false,
+                //         datos: null,
+                //         error: "El Usuario no existe"
+                //     ));
+                // }
+
+                return Ok(new ApiResponse(
+                    mensaje: "Asistencia registrada exitosamente",
+                    exito: true,
+                    datos: result
+                ));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse(
+                    mensaje: "Error al registrar la asistencia",
+                    exito: false,
+                    datos: null,
+                    error: ex.Message
+                ));
+            }
+
         }
 
 
         [HttpPost("send-report")]
         public async Task<IActionResult> SendReport()
         {
-            await _asistenciaService.SendDailyReportWhatsApp();
-            return Ok(new { message = "Reporte enviado exitosamente" });
+
+            try
+            {
+
+                // await _asistenciaService.SendDailyReportWhatsApp();
+                await _unitOfWork.AsistenciaService.SendDailyReportWhatsApp();
+
+                return Ok(new ApiResponse(
+                    mensaje: "Reporte diario enviado exitosamente",
+                    exito: true,
+                    datos: null
+                ));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Error al enviar el reporte", error = ex.Message });
+            }
         }
     }
 }

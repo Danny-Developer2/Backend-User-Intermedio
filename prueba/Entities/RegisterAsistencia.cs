@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace prueba.Entities
@@ -17,6 +18,8 @@ namespace prueba.Entities
 
         public DateTime CreatedAt { get; set; }
         public DateTime ExpiresAt { get; set; }
+
+        [JsonIgnore]
         public User User { get; set; } = null!;
     }
 }

@@ -29,7 +29,7 @@ appsettings.Production.json
 prueba/appsettings.Development.json
 # prueba/appsettings.Production.json
 prueba/appsettings*.json
-
+prueba/appsettings.json
 # Dependencies
 packages/
 node_modules/

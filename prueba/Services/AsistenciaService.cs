@@ -19,9 +19,18 @@ namespace prueba.Services
 
         public async Task<RegisterAsistencia> RegisterAsistenciaAsync(RegisterAsistenciaDTO dto)
         {
+            // Find user by full name using ToLower() which can be translated to SQL
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => (u.FirstName.ToLower() + " " + u.LastName.ToLower()) == dto.FullName.ToLower());
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
             var asistencia = new RegisterAsistencia
             {
-                UserId = dto.UserId,
+                UserId = user.Id,
                 Fecha = dto.Fecha,
                 Asistencia = dto.Asistencia,
                 CreatedAt = DateTime.Now,

@@ -7,10 +7,12 @@ namespace prueba.Dto
 {
     public class RegisterAsistenciaDTO
     {
-        public Guid UserId { get; set; } = Guid.Empty;
+        // public Guid UserId { get; set; } = Guid.Empty;
 
         public DateTime Fecha { get; set; } = DateTime.Now;
 
         public bool Asistencia { get; set; } = false;
+
+        public string FullName { get; set; } = string.Empty;
     }
 }
