@@ -22,7 +22,7 @@ namespace prueba.Repositories
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<User?> GetUserByIdAsync(Guid id)
+        public async Task<User?> GetByIdAsync(Guid id)
         {
             return await _context.Users.FindAsync(id);
         }
@@ -48,7 +48,7 @@ namespace prueba.Repositories
 
         public async Task<bool> DeleteUserAsync(Guid id)
         {
-            var user = await GetUserByIdAsync(id);
+            var user = await GetByIdAsync(id);
             if (user == null) return false;
             
             _context.Users.Remove(user);

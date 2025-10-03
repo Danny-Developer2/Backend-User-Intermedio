@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace prueba.Entities
@@ -31,7 +32,10 @@ namespace prueba.Entities
 
         public List<string> Roles { get; set; } = new List<string> { "USER" };
 
+        [JsonIgnore]
         public List<Ticket> TicketsCreated { get; set; } = new List<Ticket>();
+
+        [JsonIgnore]
         public List<Ticket> TicketsAssigned { get; set; } = new List<Ticket>();
 
 

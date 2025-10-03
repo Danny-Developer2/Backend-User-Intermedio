@@ -13,6 +13,8 @@ namespace prueba.Interfaces
         IAsistenciaService AsistenciaService { get; }
         ITicketRepository TicketRepository { get; }
         ITicketService TicketService { get; }
+        // ISupportAgentRepository SupportAgentRepository { get; }
+
 
         
         Task<bool> Complete();

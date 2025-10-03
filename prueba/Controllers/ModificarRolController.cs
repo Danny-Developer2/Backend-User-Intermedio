@@ -36,7 +36,7 @@ namespace prueba.Controllers
                 return BadRequest();
             }
 
-            var usuario = await _unitOfWork.UserRepository.GetUserByIdAsync(request.Id);
+            var usuario = await _unitOfWork.UserRepository.GetByIdAsync(request.Id);
             if (usuario == null)
             {
                 return NotFound();

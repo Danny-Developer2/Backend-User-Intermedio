@@ -34,6 +34,7 @@ namespace prueba.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
         public DateTime? ClosedAt { get; set; }
+        public DateTime? ResolvedAt { get; set; }
 
         // Prioridad del ticket
         public TicketPriority Priority { get; set; } = TicketPriority.Medium;
