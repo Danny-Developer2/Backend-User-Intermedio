@@ -17,7 +17,12 @@ public static class DependencyInjectionConfiguration
         services.AddScoped<ISessionService, SessionService>();
         services.AddScoped<IEncryptionService, EncryptionService>();
         services.AddScoped<IAsistenciaService, AsistenciaService>();
-        services.AddScoped<IWhatsAppService, WhatsAppService>();
+        // services.AddScoped<IWhatsAppService, WhatsAppService>();
+        services.AddScoped<IWhatsAppService, NoOpWhatsAppService>();
+        services.AddHostedService<AttendanceReportScheduler>();
+        services.AddScoped<ITicketRepository, TicketRepository>();
+        services.AddScoped<ITicketService, TicketService>();
+
         services.AddHostedService<AttendanceReportScheduler>();
 
         return services;

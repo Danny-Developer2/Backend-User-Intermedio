@@ -63,6 +63,78 @@ namespace prueba.Migrations
                     b.ToTable("RegisterAsistencias");
                 });
 
+            modelBuilder.Entity("prueba.Entities.Ticket", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid?>("AssignedToUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ClosedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignedToUserId");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.ToTable("Tickets");
+                });
+
+            modelBuilder.Entity("prueba.Entities.TicketComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TicketId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TicketComment");
+                });
+
             modelBuilder.Entity("prueba.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -150,6 +222,43 @@ namespace prueba.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("prueba.Entities.Ticket", b =>
+                {
+                    b.HasOne("prueba.Entities.User", "AssignedTo")
+                        .WithMany("TicketsAssigned")
+                        .HasForeignKey("AssignedToUserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("prueba.Entities.User", "CreatedBy")
+                        .WithMany("TicketsCreated")
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AssignedTo");
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("prueba.Entities.TicketComment", b =>
+                {
+                    b.HasOne("prueba.Entities.Ticket", "Ticket")
+                        .WithMany("Comments")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("prueba.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Ticket");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("prueba.Entities.UserSession", b =>
                 {
                     b.HasOne("prueba.Entities.User", "User")
@@ -159,6 +268,18 @@ namespace prueba.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("prueba.Entities.Ticket", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("prueba.Entities.User", b =>
+                {
+                    b.Navigation("TicketsAssigned");
+
+                    b.Navigation("TicketsCreated");
                 });
 #pragma warning restore 612, 618
         }

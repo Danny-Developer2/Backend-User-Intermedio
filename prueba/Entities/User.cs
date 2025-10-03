@@ -31,6 +31,9 @@ namespace prueba.Entities
 
         public List<string> Roles { get; set; } = new List<string> { "USER" };
 
+        public List<Ticket> TicketsCreated { get; set; } = new List<Ticket>();
+        public List<Ticket> TicketsAssigned { get; set; } = new List<Ticket>();
+
 
     }
 

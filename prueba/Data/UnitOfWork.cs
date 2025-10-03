@@ -17,6 +17,10 @@ namespace prueba.Data
         private readonly IAuthenticationService _authService;
         private readonly ISessionService _sessionService;
         private ILoginRepository? _loginRepository;
+        private ITicketRepository? _ticketRepository;
+        private ITicketService? _ticketService;
+        
+        
 
         private IAsistenciaService? _asistenciaService;
 
@@ -93,5 +97,27 @@ namespace prueba.Data
         {
             return await _context.SaveChangesAsync();
         }
+
+        public ITicketRepository TicketRepository
+{
+    get
+    {
+        _ticketRepository ??= new TicketRepository(_context);
+        return _ticketRepository;
     }
+
+}
+
+public ITicketService TicketService
+{
+    get
+    {
+        _ticketService ??= new TicketService(this);
+        return _ticketService;
+    }
+}
+    }
+
+    
+
 }

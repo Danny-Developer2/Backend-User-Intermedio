@@ -11,6 +11,8 @@ namespace prueba.Interfaces
         AppDbContext Context { get; }
 
         IAsistenciaService AsistenciaService { get; }
+        ITicketRepository TicketRepository { get; }
+        ITicketService TicketService { get; }
 
         
         Task<bool> Complete();
